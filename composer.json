@@ -1,0 +1,10 @@
+{
+    "autoload": {
+        "psr-0": {
+            "HierarchicalData\\": "src/"
+        }
+    },
+    "require": {
+        "nicmart/tree": "~0.2"
+    }
+}
