@@ -11,6 +11,6 @@ namespace HierarchicalData;
 
 interface Tree
 {
-    public static function create(\PDO $pdo, array $options = null): Tree;
+    public static function create(\PDO $pdo, mixed $root_data, array $options = null): Tree;
     public static function load(\PDO $pdo, int $root_id = null, array $options = null): Tree;
 }

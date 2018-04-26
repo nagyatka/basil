@@ -65,14 +65,14 @@ class NestedTree implements Tree
 
     /**
      * @param \PDO $pdo
+     * @param mixed $root_data
      * @param array|null $options
      * @return Tree
      * @throws \Exception
      */
-    public static function create(\PDO $pdo, array $options = null): Tree {
+    public static function create(\PDO $pdo, mixed $root_data, array $options = null): Tree {
         $pdo_options = $options == null ? NestedTree::pdo_default_options : $options;
-        throw new \Exception("Not yet implemented");
-        #return new NestedTree();
+        return new NestedTree(new NestedNode(0,1,$root_data), $pdo, $pdo_options);
     }
 
 
@@ -166,5 +166,41 @@ class NestedTree implements Tree
      */
     public function dump(string $dump_type, $dump_destination = null): void {
 
+    }
+
+    /**
+     * @param null $depth
+     * @return NestedNode[]
+     */
+    public function getAncestors($depth = null) {
+        if($depth == null) {
+            return $this->root_node->getAncestors();
+        }
+
+        $result = [];
+        /**
+         * @var NestedNode[]
+         */
+        $working_nodes = [$this->root_node];
+        for($i = 0; $i < $depth-1; $i++) {
+            $temp_nodes = [];
+            foreach ($working_nodes as $node) {
+                $temp_nodes = array_merge($temp_nodes, $node->getChildren());
+            }
+            $working_nodes = $temp_nodes;
+            $result = array_merge($result, $temp_nodes);
+        }
+        return $result;
+    }
+
+    /**
+     * @param null $depth
+     * @return NestedNode[]
+     */
+    public function getAncestorsAndSelf($depth = null) {
+        if($depth == 0) {
+            return [$this->root_node];
+        }
+        return array_merge([$this->root_node], $this->getAncestors($depth));
     }
 }

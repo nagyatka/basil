@@ -12,7 +12,7 @@ namespace HierarchicalData;
 class AdjacencyTree implements Tree
 {
 
-    public static function create(\PDO $pdo, array $options = null): Tree
+    public static function create(\PDO $pdo, mixed $root_data, array $options = null): Tree
     {
         // TODO: Implement create() method.
     }
