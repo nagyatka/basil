@@ -5,16 +5,18 @@ namespace Basil\Import;
 
 use Basil\Tree;
 
+/**
+ * Class RootNodeImport
+ *
+ * Imports a Node instance to Tree object. It is useful when an existing Node instance have to be exported to other
+ * format.
+ *
+ * @package Basil\Import
+ */
 class RootNodeImport extends Import
 {
-    const ROOT_NODE = "root_node";
-
-
     public function execute($data = null): Tree
     {
-        if(!($root_node = $this->getOption(self::ROOT_NODE))) {
-            throw new \InvalidArgumentException("Missing root_node option in RootNodeImport");
-        }
-        return new Tree($root_node);
+        return new Tree($data);
     }
 }

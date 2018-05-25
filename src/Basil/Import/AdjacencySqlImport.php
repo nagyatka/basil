@@ -7,6 +7,13 @@ use Basil\NodeOperation;
 use Basil\Tree;
 use Tree\Node\Node;
 
+/**
+ * Class AdjacencySqlImport
+ *
+ *
+ *
+ * @package Basil\Import
+ */
 class AdjacencySqlImport extends Import
 {
     /**

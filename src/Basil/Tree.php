@@ -9,9 +9,12 @@
 namespace Basil;
 
 
+use Basil\Import\AdjacencySqlImport;
 use Basil\Import\ArrayImport;
 use Basil\Import\Import;
 use Basil\Export\Export;
+use Basil\Import\JsonImport;
+use Basil\Import\RootNodeImport;
 use Tree\Node\Node;
 
 class Tree
@@ -59,6 +62,65 @@ class Tree
         return self::import(new ArrayImport(), $arr);
     }
 
+    /**
+     * Converts a json string to Tree object. See the details in JsonImport documentation.
+     *
+     * @param string $json_string
+     * @return Tree
+     */
+    public static function fromJson(string $json_string): Tree {
+        return self::import(new JsonImport(), $json_string);
+    }
+
+    /**
+     * Converts a Node object to Tree object. See the details in RootNodeImport documentation.
+     *
+     * @param Node $node
+     * @return Tree
+     */
+    public static function fromNode(Node $node): Tree {
+        return self::import(new RootNodeImport(), $node);
+    }
+
+    /**
+     * Loads an AdjacencyList (from the specified table) in a Tree object. See the details in AdjacencySqlImport
+     * documentation.
+     *
+     * Important note: The whole table will be loaded in the Tree object. Handling of a subtree is not supported
+     * at this moment!
+     *
+     * @param \PDO $pdo Database PDO object
+     * @param string $table_name Name of the table
+     * @param string $id_field The name of the primary key in the table
+     * @param string $parent_field
+     * @param int $root_id
+     * @return Tree
+     */
+    public static function fromAdjacencyList(
+        \PDO $pdo,
+        string $table_name,
+        string $id_field,
+        string $parent_field,
+        int $root_id): Tree {
+        return self::import(new AdjacencySqlImport([
+            AdjacencySqlImport::DB          => $pdo,
+            AdjacencySqlImport::TABLE_NAME  => $table_name,
+            AdjacencySqlImport::NODE_ID     => $id_field,
+            AdjacencySqlImport::PARENT_ID   => $parent_field,
+            AdjacencySqlImport::ROOT_ID     => $root_id
+        ]));
+    }
+
+    /**
+     * @param Import $import
+     * @param Export $export
+     * @param mixed|null $data
+     * @return mixed
+     */
+    public static function convert(Import $import, Export $export, mixed $data = null) {
+        return self::import($import, $data)->export($export);
+    }
+
 
     /*
      * Operations
@@ -76,7 +138,7 @@ class Tree
 
     /**
      * @param null $depth
-     * @return NestedNode[]
+     * @return Node[]
      */
     public function getAncestors($depth = null) {
         if($depth == null) {
@@ -110,9 +172,8 @@ class Tree
         return array_merge([$this->root_node], $this->getAncestors($depth));
     }
 
-    public function addChild() {
-        // TODO
-        $this->root_node->getChildren();
+    public function addChild(Node $node) {
+        $this->root_node->addChild($node);
     }
 
     public function getSize() {
