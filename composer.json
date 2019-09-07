@@ -1,4 +1,17 @@
 {
+    "name": "nagyatka/basil",
+    "type": "library",
+    "description": "Tree data structure for PHP",
+    "keywords": ["data structure", "php", "tree", "nested set"],
+    "license": "Apache-2.0",
+    "homepage": "https://github.com/nagyatka/basil",
+    "authors": [
+        {
+            "name": "Attila Nagy",
+            "email": "nagyatka@gmail.com",
+            "role": "Author, Developer"
+        }
+    ],
     "autoload": {
         "psr-0": {
             "Basil\\": "src/"
