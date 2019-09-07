@@ -5,6 +5,7 @@
         }
     },
     "require": {
-        "nicmart/tree": "~0.2"
+        "nicmart/tree": "~0.2",
+        "ext-pdo": "*"
     }
 }
