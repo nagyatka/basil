@@ -353,10 +353,11 @@ class NestedSetNode extends Node
             return true;
         }
 
-        if($root_node->rgt() > $result[0]->rgt()) {
+        if($root_node->rgt() < $result[0]->rgt()) {
             return false;
         }
         else {
+
             $next_node = array_shift($result);
             $root_node->addChild($next_node);
             if(count($result) < 1) {
@@ -364,7 +365,7 @@ class NestedSetNode extends Node
             }
 
             while(self::buildTree($next_node, $result) == false) {
-                if($root_node->rgt() > $result[0]->rgt() ) {
+                if($root_node->rgt() < $result[0]->rgt()) {
                     return false;
                 }
                 $next_node = array_shift($result);

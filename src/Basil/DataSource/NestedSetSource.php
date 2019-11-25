@@ -14,6 +14,7 @@ class NestedSetSource extends DataSource
     {
         $data = [];
         $this->iter_rows($root_node, 1, $data);
+        $data = array_reverse($data);
 
         /** @var \PDO $db */
         list($db, $tn, $in, $ln, $rn) = $this->db_params();
